@@ -168,7 +168,7 @@ async function doBuild(input, branch, head, branches, output) {
 
   logger.info("Building: %s ...", branch);
 
-  await exec(input, ["yarn", "install"], "ignore");
+  await exec(input, ["yarn", "install", "--pure-lockfile"], "ignore");
 
   const buildStorybook = join(input, "node_modules/.bin/build-storybook");
   if (!(await exists(buildStorybook))) {
