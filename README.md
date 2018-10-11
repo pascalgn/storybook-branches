@@ -1,5 +1,7 @@
 # storybook-branches
 
+[![Docker build status](https://img.shields.io/docker/build/pascalgn/storybook-branches.svg?style=flat-square)](https://hub.docker.com/r/pascalgn/storybook-branches/) [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/pascalgn/storybook-branches/blob/master/LICENSE)
+
 Provide [storybook](https://storybook.js.org/) builds for multiple branches
 
 ## Usage
