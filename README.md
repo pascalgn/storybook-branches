@@ -21,7 +21,7 @@ The following environment variables are required:
 
 * `REPOSITORY` The URL of the remote repository
 
-Additionally, the followin environment variables are supported:
+Additionally, the following environment variables are supported:
 
 * `DIR` The subdirectory within the repository (default _._)
 * `PORT` The port to run the HTTP server on (default _9001_)
