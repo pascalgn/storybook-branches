@@ -163,6 +163,8 @@ async function doBuild(input, branch, head, branches, output) {
     }
   }
 
+  await writeFile(headFile, head, "utf8");
+
   logger.info("Building: %s ...", branch);
 
   await exec(input, ["yarn", "install"], "ignore");
@@ -180,8 +182,6 @@ async function doBuild(input, branch, head, branches, output) {
   );
 
   await writeModifiedIndexFile(join(output, "index.html"), branch, branches);
-
-  await writeFile(headFile, head, "utf8");
 
   logger.info("Built: %s", branch);
 }
@@ -249,7 +249,9 @@ async function fixInjectedBranches(dir, branches) {
 
       await writeFile(indexFile, customized, "utf8");
     } catch (e) {
-      logger.warn("Could not fix file: %s: %s", indexFile, e.message);
+      if (e.code !== "ENOENT") {
+        logger.warn("Could not fix file: %s: %s", indexFile, e.message);
+      }
     }
   }
 }
