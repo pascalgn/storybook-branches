@@ -1,0 +1,26 @@
+{
+  "name": "storybook-branches",
+  "version": "0.1.0",
+  "author": "Pascal",
+  "license": "MIT",
+  "bin": {
+    "storybook-branches": "cli.js"
+  },
+  "files": [
+    "cli.js",
+    "package.json",
+    "assets"
+  ],
+  "scripts": {
+    "lint": "eslint cli.js"
+  },
+  "dependencies": {
+    "argparse": "^1.0.10",
+    "for-each-branch": "^0.1.0",
+    "fs-extra": "^7.0.0",
+    "winston": "^3.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.6.1"
+  }
+}

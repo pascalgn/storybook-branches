@@ -1,0 +1,32 @@
+<script type="text/javascript">
+  (function () {
+    const branches = [];
+    const branch = null;
+
+    const verticalPanel = document.getElementsByClassName("Pane vertical Pane1")[0];
+    const innerPanel = verticalPanel.children[0].children[0].children[0];
+
+    const select = document.createElement("select");
+    select.style =
+      "margin-bottom: 10px;\
+       width: 100%; -webkit-appearance: none;\
+       padding: 5px; border-radius: 0";
+
+    for (const b of branches) {
+      const option = document.createElement("option");
+      option.text = b;
+      if (b === branch) {
+        option.selected = true;
+      }
+      select.add(option);
+    }
+
+    select.onchange = function () {
+      const index = select.selectedIndex;
+      const b = branches[index];
+      window.location.href = "/" + b + "/";
+    }
+
+    innerPanel.insertBefore(select, innerPanel.children[1]);
+  })();
+</script>
