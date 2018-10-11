@@ -163,6 +163,7 @@ async function doBuild(input, branch, head, branches, output) {
     }
   }
 
+  await mkdirp(output);
   await writeFile(headFile, head, "utf8");
 
   logger.info("Building: %s ...", branch);
