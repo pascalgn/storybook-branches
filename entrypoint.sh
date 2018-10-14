@@ -20,6 +20,7 @@ fi
 exec storybook-branches \
     --port "${PORT:-9001}" \
     --sleep "${SLEEP:-60}" \
+    --default "${DEFAULT}" \
     --branches "${BRANCHES:-.+}" \
     --dir "${DIR:-.}" \
     "${REPOSITORY}" "${OUTPUT:-dist}"

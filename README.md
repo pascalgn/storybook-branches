@@ -8,12 +8,11 @@ Provide [storybook](https://storybook.js.org/) builds for multiple branches
 
 Start 
 
-    docker run --rm -it \
+    docker run --rm \
         -p 9001:9001 \
-        -e "REPOSITORY=https://github.com/some/repository" \
-        -e "DIR=some/directory/" \
-        -e "BRANCHES=master" \
-        pascalgn/storybook-branches
+        -e "REPOSITORY=https://github.com/pascalgn/storybook-branches" \
+        -e "BRANCHES=storybook.+" \
+        pascalgn/storybook-branches:latest
 
 ## Options
 
@@ -26,6 +25,7 @@ Additionally, the following environment variables are supported:
 * `DIR` The subdirectory within the repository (default _._)
 * `PORT` The port to run the HTTP server on (default _9001_)
 * `BRANCHES` Regular expression filter of the branches to build (default _.+_)
+* `DEFAULT` Default branch to display (default remote branch will be used if unset)
 * `SLEEP` The time to sleep between fetches, in seconds (default _60_)
 * `OUTPUT` The output directory (default _dist_)
 * `LOG_LEVEL` A [winston](https://github.com/winstonjs/winston) log level (default _info_)

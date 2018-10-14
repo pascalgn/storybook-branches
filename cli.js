@@ -50,6 +50,11 @@ async function main() {
     metavar: "<branch>",
     defaultValue: ".+"
   });
+  parser.addArgument(["--default"], {
+    help: "Default branch to show",
+    metavar: "<default>",
+    defaultValue: ""
+  });
   parser.addArgument(["--dir"], {
     help: "Directory inside the repository",
     metavar: "<dir>",
@@ -76,6 +81,7 @@ async function main() {
 
   const { port, dir, sleep, repository } = args;
   const branchesFilter = new RegExp(args.branches);
+  const defaultBranch = args["default"];
   const output = resolve(args.output);
 
   const workdir = resolve(output, "repository");
@@ -100,14 +106,31 @@ async function main() {
     logger.info("Clone finished!");
   }
 
-  await runBuildLoop(workdir, dir, branchesFilter, sleep, storybooks);
+  await runBuildLoop(
+    workdir,
+    dir,
+    branchesFilter,
+    defaultBranch,
+    sleep,
+    storybooks
+  );
 }
 
-async function runBuildLoop(workdir, dir, filter, sleep, output) {
+async function runBuildLoop(
+  workdir,
+  dir,
+  filter,
+  defaultBranch,
+  sleep,
+  output
+) {
   const input = resolve(workdir, dir);
 
-  const defaultBranch = await getDefaultBranch(workdir);
+  if (!defaultBranch || !defaultBranch.length) {
+    defaultBranch = await getDefaultBranch(workdir);
+  }
   await writeRedirectFile(join(output, "index.html"), defaultBranch);
+  logger.debug("Default branch: %s", defaultBranch);
 
   let previousBranches = [];
 
@@ -115,6 +138,7 @@ async function runBuildLoop(workdir, dir, filter, sleep, output) {
     const refs = await forEachBranch({
       dir: workdir,
       branches: filter,
+      force: true,
       reset: true,
       clean: true,
       callback: ({ branch, head, branches }) =>
@@ -122,6 +146,12 @@ async function runBuildLoop(workdir, dir, filter, sleep, output) {
     });
 
     const currentBranches = refs.map(ref => ref.branch);
+    if (currentBranches.length && !currentBranches.includes(defaultBranch)) {
+      defaultBranch = currentBranches[0];
+      await writeRedirectFile(join(output, "index.html"), defaultBranch);
+      logger.debug("New default branch: %s", defaultBranch);
+    }
+
     await removeDeletedBranches(output, currentBranches, previousBranches);
     await fixInjectedBranches(output, currentBranches);
     previousBranches = currentBranches;
