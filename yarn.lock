@@ -437,10 +437,10 @@ for-each-branch@^0.1.1:
   resolved "https://registry.yarnpkg.com/for-each-branch/-/for-each-branch-0.1.1.tgz#38c83ff86f8606f9488037755447ccdeeb3c3e37"
   integrity sha512-BV+3CxgfI4gwHQwsUCywHVXrUpj4Xn82eFCbEB0p9M438flJ0l0DiivyOvh/WXpotXyDed7wGPwKPDfswoFe6Q==
 
-fs-extra@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-7.0.0.tgz#8cc3f47ce07ef7b3593a11b9fb245f7e34c041d6"
-  integrity sha512-EglNDLRpmaTWiD/qraZn6HREAEAHJcJOmxNEYwq6xeMKnVMAy3GUcFB+wXt2C6k4CNvB/mP1y/U3dzvKKj5OtQ==
+fs-extra@^7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-7.0.1.tgz#4f189c44aa123b895f722804f55ea23eadc348e9"
+  integrity sha512-YJDaCJZEnBmcbw13fvdAM9AwNOJwOzrE4pqMqBq5nFiEqXUqHwlK4B+3pUw6JNvfSPtX05xFHtYy/1ni01eGCw==
   dependencies:
     graceful-fs "^4.1.2"
     jsonfile "^4.0.0"
