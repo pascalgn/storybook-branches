@@ -1,32 +1,109 @@
 <script type="text/javascript">
-  (function () {
+  (function() {
     const branches = [];
     const branch = null;
 
-    const verticalPanel = document.getElementsByClassName("Pane vertical Pane1")[0];
-    const innerPanel = verticalPanel.children[0].children[0].children[0];
+    const selectId = "storybook-branches-select";
+    const existing = document.getElementById(selectId);
+    if (existing) {
+      return;
+    }
 
-    const select = document.createElement("select");
-    select.style =
-      "margin-bottom: 10px;\
-       width: 100%; -webkit-appearance: none;\
-       padding: 5px; border-radius: 0";
+    function createSelect() {
+      const select = document.createElement("select");
+      select.id = selectId;
 
-    for (const b of branches) {
-      const option = document.createElement("option");
-      option.text = b;
-      if (b === branch) {
-        option.selected = true;
+      for (const b of branches) {
+        const option = document.createElement("option");
+        option.text = b;
+        if (b === branch) {
+          option.selected = true;
+        }
+        select.add(option);
       }
-      select.add(option);
+
+      select.onchange = function() {
+        const index = select.selectedIndex;
+        const b = branches[index];
+        window.location.href = "/" + b + "/";
+      };
+
+      return select;
     }
 
-    select.onchange = function () {
-      const index = select.selectedIndex;
-      const b = branches[index];
-      window.location.href = "/" + b + "/";
+    // Storybook 3 and 4
+    const verticalPanelList = document.getElementsByClassName(
+      "Pane vertical Pane1"
+    );
+    if (verticalPanelList && verticalPanelList.length) {
+      const verticalPanel = verticalPanelList[0];
+      const innerPanel = verticalPanel.children[0].children[0].children[0];
+
+      const select = createSelect();
+      select.style = `
+        -webkit-appearance: none;
+        margin-bottom: 10px;
+        width: 100%;
+        padding: 0 5px;
+        height: 26px;
+        border-radius: 0;
+        border-color: rgb(193, 193, 193);
+        color: rgb(130, 130, 130);
+      `;
+
+      innerPanel.insertBefore(select, innerPanel.children[1]);
+
+      if (
+        innerPanel.lastChild.style &&
+        innerPanel.lastChild.style.height === "calc(100vh - 105px)"
+      ) {
+        innerPanel.lastChild.style.height = "calc(100vh - 131px)";
+      }
+
+      return;
     }
 
-    innerPanel.insertBefore(select, innerPanel.children[1]);
+    // Storybook 5
+    function addSelect(run) {
+      const toolbarPanel = document.evaluate(
+        '//*[@id="root"]//button[@title="Toggle background grid"]/..',
+        document,
+        null,
+        XPathResult.FIRST_ORDERED_NODE_TYPE,
+        null
+      ).singleNodeValue;
+
+      if (!toolbarPanel) {
+        if (run < 100) {
+          setTimeout(() => addSelect(run + 1), 100);
+        }
+        return;
+      }
+
+      const select = createSelect();
+      select.style = `
+        -webkit-appearance: none;
+        border-radius: 0;
+        padding: 0 5px;
+        margin-top: 8px;
+        height: 24px;
+        min-width: 3em;
+        font-size: 0.8rem;
+        border-color: rgba(0,0,0,.1);
+        color: rgb(153, 153, 153);
+        background: transparent;
+      `;
+
+      const separator = toolbarPanel.querySelector("span");
+      if (separator) {
+        const separatorCopy = document.createElement("span");
+        separatorCopy.className = separator.className;
+        toolbarPanel.append(separatorCopy);
+      }
+
+      toolbarPanel.append(select);
+    }
+
+    addSelect(0);
   })();
 </script>

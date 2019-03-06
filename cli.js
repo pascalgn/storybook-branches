@@ -11,7 +11,14 @@ const { spawn } = require("child_process");
 
 const winston = require("winston");
 const { ArgumentParser } = require("argparse");
-const { mkdirp, exists, readFile, writeFile, remove } = require("fs-extra");
+const {
+  mkdirp,
+  exists,
+  readFile,
+  writeFile,
+  remove,
+  copy
+} = require("fs-extra");
 
 const { forEachBranch } = require("for-each-branch");
 
@@ -212,6 +219,14 @@ async function doBuild(input, branch, head, branches, output) {
     "ignore"
   );
 
+  // some storybook versions don't treat the output as absolute path:
+  const wrongOutput = join(input, output);
+  if (await exists(wrongOutput)) {
+    logger.debug("Moving %s to %s...", wrongOutput, output);
+    await copy(wrongOutput, output, { overwrite: false, errorOnExist: true });
+    await remove(wrongOutput);
+  }
+
   await writeModifiedIndexFile(join(output, "index.html"), branch, branches);
 
   logger.info("Built: %s", branch);
@@ -290,7 +305,7 @@ async function fixInjectedBranches(dir, branches) {
 function exec(cwd, command = [], stderr = "inherit") {
   let stdout = "ignore";
   if (logger.level === "debug") {
-    logger.debug("Executing command: %s", command.join(" "));
+    logger.debug("Executing command in %s: %s", cwd, command.join(" "));
     stdout = "inherit";
     stderr = "inherit";
   }
