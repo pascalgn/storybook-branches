@@ -1,0 +1,23 @@
+{
+  "name": "storybook-branches-example",
+  "version": "0.0.1",
+  "author": "Pascal",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "lint": "eslint cli.js",
+    "storybook": "start-storybook -p 9001 -c .storybook"
+  },
+  "dependencies": {
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.3.4",
+    "@storybook/react": "^5.0.0",
+    "babel-loader": "^8.0.5",
+    "eslint": "^5.15.1",
+    "prettier": "^1.16.4",
+    "webpack": "^4.29.6"
+  }
+}
