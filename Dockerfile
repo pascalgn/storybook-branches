@@ -1,6 +1,6 @@
 FROM node:alpine
 
-RUN apk add --no-cache tini curl git openssh-client tar openssl \
+RUN apk add --no-cache tini curl git openssh-client tar openssl bash \
     && adduser -D -g storybook-branches storybook-branches
 
 COPY . /tmp/src/
