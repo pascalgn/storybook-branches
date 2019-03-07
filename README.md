@@ -5,7 +5,9 @@
 Provide [storybook](https://storybook.js.org/) builds for multiple branches and add a dropdown to quickly switch between those branches
 
 <p align="center">
-<img width="600" height="364" src="https://pascalgn.github.io/storybook-branches/demo.gif">
+    <img width="600" height="364" src="https://pascalgn.github.io/storybook-branches/demo.gif">
+    <br>
+    <i>Switching between different versions on branches storybook-1, storybook-2 and storybook-3</i>
 </p>
 
 ## Usage
