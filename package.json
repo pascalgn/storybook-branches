@@ -1,6 +1,6 @@
 {
   "name": "storybook-branches",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "author": "Pascal",
   "license": "MIT",
   "private": true,
@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "argparse": "^1.0.10",
-    "for-each-branch": "^0.1.1",
+    "for-each-branch": "^0.2.0",
     "fs-extra": "^7.0.1",
     "winston": "^3.2.1"
   },

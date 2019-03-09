@@ -223,7 +223,7 @@ async function doBuild(input, branch, head, branches, output) {
   const wrongOutput = join(input, output);
   if (await exists(wrongOutput)) {
     logger.debug("Moving %s to %s...", wrongOutput, output);
-    await copy(wrongOutput, output, { overwrite: false, errorOnExist: true });
+    await copy(wrongOutput, output);
     await remove(wrongOutput);
   }
 
