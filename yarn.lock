@@ -407,10 +407,10 @@ flatted@^2.0.0:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-2.0.1.tgz#69e57caa8f0eacbc281d2e2cb458d46fdb449e08"
   integrity sha512-a1hQMktqW9Nmqr5aktAux3JMNqaucxGcjtjWnZLHX7yyPCmlSV3M54nGYbqT8K+0GhF3NBgmJCc3ma+WOgX8Jg==
 
-for-each-branch@^0.2.3:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/for-each-branch/-/for-each-branch-0.2.3.tgz#b81898f7872bf7b2238d055b0251165f0fa557e0"
-  integrity sha512-ODxr93KDcJ1iMAs5SDFeuyQplna4kxp0GHs1Cq5G5FPlxWytkPxG4MovFZZI+du0xcjhLKOEw0XD1mKOfNJLMg==
+for-each-branch@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/for-each-branch/-/for-each-branch-0.2.4.tgz#5086f92a559b50ef244edfe90ef60aed300ccd11"
+  integrity sha512-xN4bFfw3j3zerPWmoDf8Z0teUJWygYdRI6/1cBl5yOSrAJ+dxndtsE83U7JE5GGKij5pZIqhX53yAN3zhbqiug==
 
 fs-extra@^8.1.0:
   version "8.1.0"
