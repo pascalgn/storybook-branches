@@ -7,11 +7,19 @@ const { parse } = require("url");
 const { createServer } = require("http");
 const path = require("path");
 const { join, resolve } = path;
-const { spawn } = require("child_process");
+const spawn = require("cross-spawn");
 
 const winston = require("winston");
 const { ArgumentParser } = require("argparse");
-const { mkdirp, stat, readFile, writeFile, remove, copy } = require("fs-extra");
+const {
+  mkdirp,
+  stat,
+  readFile,
+  writeFile,
+  remove,
+  copy,
+  readJson
+} = require("fs-extra");
 
 const { forEachBranch } = require("for-each-branch");
 
@@ -204,6 +212,11 @@ async function doBuild(input, branch, head, branches, output) {
 
   await exec(input, ["yarn", "install", "--pure-lockfile"], "ignore");
 
+  const pkg = await readJson(join(input, "package.json"));
+  if (pkg.scripts != null && pkg.scripts["pre-build-storybook"] != null) {
+    await exec(input, ["yarn", "pre-build-storybook"], "ignore");
+  }
+
   const buildStorybook = join(input, "node_modules/.bin/build-storybook");
   if (!(await exists(buildStorybook))) {
     logger.warn("No build-storybook found: %s", buildStorybook);
@@ -314,7 +327,9 @@ function exec(cwd, command = [], stderr = "inherit") {
       if (code === 0) {
         resolve();
       } else {
-        reject({ message: `Command execution failed! ${code}` });
+        reject({
+          message: `Command failed with ${code}: ${command.join(" ")}`
+        });
       }
     });
   });
