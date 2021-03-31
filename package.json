@@ -16,12 +16,16 @@
     "lint": "eslint cli.js"
   },
   "dependencies": {
-    "argparse": "^1.0.10",
-    "for-each-branch": "^0.2.4",
-    "fs-extra": "^8.1.0",
-    "winston": "^3.2.1"
+    "argparse": "^2.0.1",
+    "for-each-branch": "^0.2.6",
+    "fs-extra": "^9.1.0",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
-    "eslint": "^6.8.0"
+    "eslint": "^7.23.0"
+  },
+  "prettier": {
+    "trailingComma": "none",
+    "arrowParens": "avoid"
   }
 }

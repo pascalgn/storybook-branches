@@ -11,14 +11,7 @@ const { spawn } = require("child_process");
 
 const winston = require("winston");
 const { ArgumentParser } = require("argparse");
-const {
-  mkdirp,
-  exists,
-  readFile,
-  writeFile,
-  remove,
-  copy
-} = require("fs-extra");
+const { mkdirp, stat, readFile, writeFile, remove, copy } = require("fs-extra");
 
 const { forEachBranch } = require("for-each-branch");
 
@@ -42,49 +35,53 @@ async function main() {
 
   const parser = new ArgumentParser({
     prog: name,
-    version,
     description,
-    addHelp: true
+    add_help: true
   });
-  parser.addArgument(["-p", "--port"], {
+  parser.add_argument("-v", "--version", {
+    action: "version",
+    version,
+    help: "Show version number and exit"
+  });
+  parser.add_argument("-p", "--port", {
     help: "Port on which to start the HTTP server",
     metavar: "<port>",
-    defaultValue: 9001,
+    default: 9001,
     type: "int"
   });
-  parser.addArgument(["-b", "--branches"], {
+  parser.add_argument("-b", "--branches", {
     help: "Filter branches to build",
     metavar: "<branch>",
-    defaultValue: ".+"
+    default: ".+"
   });
-  parser.addArgument(["--default"], {
+  parser.add_argument("--default", {
     help: "Default branch to show",
     metavar: "<default>",
-    defaultValue: ""
+    default: ""
   });
-  parser.addArgument(["--dir"], {
+  parser.add_argument("--dir", {
     help: "Directory inside the repository",
     metavar: "<dir>",
-    defaultValue: "."
+    default: "."
   });
-  parser.addArgument(["-s", "--sleep"], {
+  parser.add_argument("-s", "--sleep", {
     help: "Amount to sleep between git fetch calls",
     metavar: "<sleep>",
-    defaultValue: 60,
+    default: 60,
     type: "int"
   });
-  parser.addArgument("repository", {
+  parser.add_argument("repository", {
     help: "Source repository URL",
     metavar: "<repository>"
   });
-  parser.addArgument("output", {
+  parser.add_argument("output", {
     help: "Target directory",
     metavar: "<output>",
-    defaultValue: "dist",
+    default: "dist",
     nargs: "?"
   });
 
-  const args = parser.parseArgs();
+  const args = parser.parse_args();
 
   const { port, dir, sleep, repository } = args;
   const branchesFilter = new RegExp(args.branches);
@@ -312,6 +309,7 @@ function exec(cwd, command = [], stderr = "inherit") {
   const stdio = ["ignore", stdout, stderr];
   return new Promise((resolve, reject) => {
     const proc = spawn(command[0], command.slice(1), { cwd, stdio });
+    proc.on("error", e => reject(e));
     proc.on("exit", code => {
       if (code === 0) {
         resolve();
@@ -320,6 +318,13 @@ function exec(cwd, command = [], stderr = "inherit") {
       }
     });
   });
+}
+
+function exists(path) {
+  return stat(path).then(
+    () => Promise.resolve(true),
+    e => (e.code === "ENOENT" ? Promise.resolve(false) : Promise.reject(e))
+  );
 }
 
 function doSleep(sleep) {
@@ -350,7 +355,7 @@ function startServer(dir, port) {
       localPath = prefix;
     }
 
-    fs.exists(localPath, exists => {
+    exists(localPath).then(exists => {
       if (exists) {
         const stat = fs.statSync(localPath);
         if (stat.isDirectory()) {
